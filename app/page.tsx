@@ -27,7 +27,7 @@ export default function Home() {
         throw new Error('Failed to fetch board')
       }
       const board: ResponseJSON = await res.json()
-     
+
       setPuzzle(board.newboard.grids[0].value)
       setSolution(board.newboard.grids[0].solution)
       setLoading(false)
@@ -57,15 +57,15 @@ export default function Home() {
     return true
   }
   if (loading) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center space-y-4">
-        <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-gray-700 font-medium">Loading puzzle...</p>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center space-y-4">
+          <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-gray-700 font-medium">Loading puzzle...</p>
+        </div>
       </div>
-    </div>
-  );
-}
+    )
+  }
   return (
     <div className="min-h-screen bg-gray-50 p-6 text-black">
       <div className="flex flex-col items-center">
@@ -82,7 +82,8 @@ export default function Home() {
                 {row.map((value, colIndex) => (
                   <input
                     key={colIndex}
-                    type="text"
+                    type="text" 
+                    maxLength={1}
                     value={value === 0 ? '' : value}
                     onChange={(e) => handleValueChange(rowIndex, colIndex, e.target.value)}
                     className={`w-8 h-8 text-center text-sm border ${colIndex % 3 === 0 ? 'border-l-4' : 'border-l'
