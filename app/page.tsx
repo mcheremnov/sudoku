@@ -19,47 +19,22 @@ export default function Home() {
   const [puzzle, setPuzzle] = useState<number[][]>([])
   const [solution, setSolution] = useState<number[][]>([])
   const [showSolution, setShowSolution] = useState(false)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const fetchBoard = async () => {
-      const board = {
-        "newboard": {
-          "grids": [
-            {
-              "value": [
-                [2, 5, 0, 0, 7, 3, 0, 0, 0],
-                [0, 1, 9, 0, 0, 0, 0, 0, 0],
-                [7, 0, 0, 0, 0, 0, 2, 0, 0],
-                [0, 6, 5, 2, 0, 0, 0, 0, 8],
-                [3, 9, 0, 0, 5, 0, 1, 0, 0],
-                [4, 2, 0, 0, 0, 0, 0, 0, 0],
-                [9, 0, 1, 0, 0, 5, 0, 0, 2],
-                [0, 7, 0, 0, 1, 0, 0, 0, 6],
-                [6, 0, 4, 0, 0, 0, 0, 8, 0]
-              ],
-              "solution": [
-                [2, 5, 6, 1, 7, 3, 8, 4, 9],
-                [8, 1, 9, 5, 2, 4, 7, 6, 3],
-                [7, 4, 3, 6, 8, 9, 2, 1, 5],
-                [1, 6, 5, 2, 4, 7, 3, 9, 8],
-                [3, 9, 7, 8, 5, 6, 1, 2, 4],
-                [4, 2, 8, 9, 3, 1, 6, 5, 7],
-                [9, 8, 1, 3, 6, 5, 4, 7, 2],
-                [5, 7, 2, 4, 1, 8, 9, 3, 6],
-                [6, 3, 4, 7, 9, 2, 5, 8, 1]
-              ],
-              "difficulty": "Medium"
-            }
-          ],
-          "results": 1,
-          "message": "All Ok"
-        }
-      } as ResponseJSON
+      const res = await fetch('https://sudoku-api.vercel.app/api/dosuku')
+      if (!res.ok) {
+        throw new Error('Failed to fetch board')
+      }
+      const board: ResponseJSON = await res.json()
+     
       setPuzzle(board.newboard.grids[0].value)
       setSolution(board.newboard.grids[0].solution)
+      setLoading(false)
     }
     fetchBoard()
   }, [])
-  
+
   const handleValueChange = (row: number, col: number, val: string | null) => {
     const num = parseInt(val ?? '')
     setPuzzle(prev => {
@@ -73,12 +48,24 @@ export default function Home() {
     for (let i = 0; i < userBoard.length; i++) {
       for (let j = 0; j < userBoard[i].length; j++) {
         if (userBoard[i][j] !== solutionBoard[i][j]) {
+          alert('Solution is incorrect. Please try again.')
           return false
         }
       }
     }
+    alert('Congratulations! Your solution is correct.')
     return true
   }
+  if (loading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="text-center space-y-4">
+        <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-gray-700 font-medium">Loading puzzle...</p>
+      </div>
+    </div>
+  );
+}
   return (
     <div className="min-h-screen bg-gray-50 p-6 text-black">
       <div className="flex flex-col items-center">
@@ -135,10 +122,10 @@ export default function Home() {
         {/* Buttons */}
         <div className="mt-6 flex gap-4">
           <button
-            onClick={() => setShowSolution(true)}
+            onClick={() => setShowSolution(prev => !prev)}
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-4 rounded"
           >
-            Reveal Solution
+            {showSolution ? 'Hide Solution' : 'Reveal Solution'}
           </button>
           <button
             onClick={() => checkSolution(puzzle, solution)}
