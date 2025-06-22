@@ -2,6 +2,16 @@
 
 A modern Sudoku puzzle game built with [Next.js](https://nextjs.org/), [TypeScript](https://www.typescriptlang.org/), and styled with [Tailwind CSS](https://tailwindcss.com/). Powered by `pnpm` for fast and efficient package management.
 
+Try the app right now:  🔗 [sudoku-omega-peach.vercel.app](https://sudoku-omega-peach.vercel.app/)
+
+
+
+## 🧠 API Reference
+
+This app fetches puzzle data from the open Sudoku GraphQL API:
+
+🔗 [Dosuku](https://sudoku-api.vercel.app/)
+
 ## ✨ Features
 
 - 9×9 interactive Sudoku grid
@@ -21,7 +31,6 @@ A modern Sudoku puzzle game built with [Next.js](https://nextjs.org/), [TypeScri
 - Deployment-ready: Vercel, Netlify, or Static Export
 
 ## 🚀 Getting Started
-
 Clone the repo and install dependencies:
 
 ```bash
@@ -29,3 +38,8 @@ git clone https://github.com/mcheremnov/sudoku.git
 cd sudoku-app
 pnpm install
 pnpm dev
+```
+
+## 📄 License
+
+MIT License © 2025 Maksym Cheremnov
